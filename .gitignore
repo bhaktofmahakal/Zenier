@@ -1,0 +1,14 @@
+node_modules
+out
+dist
+*.log
+.DS_Store
+electron-userdata
+.env
+.idea
+.vscode
+*.webm
+*.mp4
+session.json
+thumbnail.jpg
+/videos
