@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Global Reset ────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: #121315;
+  color: #e3e2e3;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Selection ───────────────────────────────── */
+::selection {
+  background-color: rgba(128, 131, 255, 0.3);
+  color: white;
+}
+
+/* ── Material Symbols ────────────────────────── */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ── Glass / Zenier surfaces ────────────────── */
+.glass {
+  background: rgba(52, 53, 54, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-panel {
+  background: rgba(41, 42, 43, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-effect {
+  background: rgba(41, 42, 43, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* ── Active source glow ──────────────────────── */
+.active-glow {
+  box-shadow: 0 0 20px rgba(128, 131, 255, 0.3);
+  border: 2px solid #8083ff;
+}
+
+/* ── Success glow ────────────────────────────── */
+.success-glow {
+  box-shadow: 0 0 40px -10px rgba(78, 222, 163, 0.3);
+}
+
+/* ── Global Scrollbar ────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(128, 131, 255, 0.2);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 131, 255, 0.4);
+}
+
+/* ── Animations ──────────────────────────────── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.pulse-dot {
+  animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ── Drag region for custom title bar ────────── */
+.drag-region {
+  -webkit-app-region: drag;
+}
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+/* ── Transition utilities ────────────────────── */
+.transition-zenier {
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
