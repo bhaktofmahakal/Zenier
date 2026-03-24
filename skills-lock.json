@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "skills": {
+    "Frontend Responsive Design Standards": {
+      "source": "am-will/codex-skills",
+      "sourceType": "github",
+      "computedHash": "e01516e24ba086a603fdf753f9b4e428a3684fbf3010b9295352202fd3461fa8"
+    },
+    "debugging": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "178f2e9c76986e3b3ef1007d7ecc79a2bacd82dd1085886ff734dcd6587a44cc"
+    },
+    "electron": {
+      "source": "teachingai/full-stack-skills",
+      "sourceType": "github",
+      "computedHash": "5c45286626a71d8ec426dcc8390e47743d052426bcf696cc5c75df4ab374c7db"
+    },
+    "electron-best-practices": {
+      "source": "jwynia/agent-skills",
+      "sourceType": "github",
+      "computedHash": "744549070132b3bc0602fd7121d42278ba74694b9d0943358093bde3543cbe97"
+    },
+    "electron-ipc": {
+      "source": "seanchiuai/multishot",
+      "sourceType": "github",
+      "computedHash": "c25bbfee5288a483169f2b581cbf9320677544caa1aec92577eca1f49d672f61"
+    },
+    "error-handling-patterns": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "computedHash": "bf0cc90f11c0b249036666117a8b1dd1490cbbc252103e2f7882f64a833a8004"
+    },
+    "event-driven-architect": {
+      "source": "404kidwiz/claude-supercode-skills",
+      "sourceType": "github",
+      "computedHash": "31bc535ee747ac538c2402a600ae0912cf4753e8e4459fa318151e513b2e8783"
+    },
+    "ffmpeg": {
+      "source": "digitalsamba/claude-code-video-toolkit",
+      "sourceType": "github",
+      "computedHash": "453ce416b404291eb9ae04164b68447b3f35d9fb019f924ab5b72c503b2a6dc8"
+    },
+    "ffmpeg-patterns": {
+      "source": "mindmorass/reflex",
+      "sourceType": "github",
+      "computedHash": "8a690bec88fff633bf527483ee5f823eb3d838ab3e5acaa466dfcceecf41e33f"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "computedHash": "516bd2154eb843a8240e43d5b285229129853114ad7075a5e141e1c08e408c84"
+    },
+    "frontend-design-system": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "da8fe39e337e255e6cffa99bec61458afbfb843c0b01b66012f628b5aabdb5b6"
+    },
+    "memory-management": {
+      "source": "aaron-he-zhu/seo-geo-claude-skills",
+      "sourceType": "github",
+      "computedHash": "c5644e6ce52dd7a980efc0ebd30c65f0f88724f4a178529a4f1337162bd85362"
+    },
+    "memory-safety-patterns": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "computedHash": "5085d0511e0fe294250809fddeeebd37754ee64978615d38c0ca9052c837eeb8"
+    },
+    "nestjs-queue-architect": {
+      "source": "shipshitdev/library",
+      "sourceType": "github",
+      "computedHash": "30bdc784c24fe09bc8864e867b59034a2e9a0f71979bd4b5ba908c5f671693eb"
+    },
+    "nodejs-backend-patterns": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "computedHash": "47f9ab40a7ddedd69089da1390080735f6715356916d6fc43f525522887d7dfe"
+    },
+    "nodejs-best-practices": {
+      "source": "sickn33/antigravity-awesome-skills",
+      "sourceType": "github",
+      "computedHash": "9f8d3f268624c4757f4039617942d3e8ddcf420b9295cb943bea3bf9feb37e9d"
+    },
+    "retry_exponential_backoff": {
+      "source": "davidcastagnetoa/skills",
+      "sourceType": "github",
+      "computedHash": "ac36a4a1bd354a51ba7540c0cb3eaadb8e4fb0737d0f8c1317bbf923a13f2c03"
+    },
+    "state-management": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "19bd2a636363f3d20386b753d724ee33433ef770ca36f714163568be9b6d25de"
+    },
+    "streaming-patterns": {
+      "source": "mindmorass/reflex",
+      "sourceType": "github",
+      "computedHash": "1d5ec235eaf3bbf5f29a7ecb2aa71486768f2342dc7f17c474c929fcfe8c1da7"
+    },
+    "systematic-debugging": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "computedHash": "72e9ab72627e4fd8ed26a582e82309a98ecdc4f6e1c99418430ac05682c9e91d"
+    },
+    "transloadit-media-processing": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "computedHash": "f9b7f9988e6c9044182406f7466b84b6b2c6db580efff0a06906b0f15992d513"
+    },
+    "uuid-generator": {
+      "source": "dkyazzentwatwa/chatgpt-skills",
+      "sourceType": "github",
+      "computedHash": "0ccca2d11148da655ccdc797cb031368d8338e4a8156f247e44edd778a9159ee"
+    }
+  }
+}
