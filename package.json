@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "electron-vite dev",
     "build": "electron-vite build",
+    "build-web": "vite build src/renderer -c src/renderer/vite.config.ts",
     "start": "electron-vite preview",
     "postinstall": "electron-builder install-app-deps",
     "lint": "eslint ."
@@ -34,5 +35,28 @@
     "tailwindcss": "^3.4.3",
     "typescript": "^5.4.5",
     "vite": "^4.5.14"
+  },
+  "build": {
+    "appId": "com.zenier.recorder",
+    "productName": "Zenier",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false,
+      "shortcutName": "Zenier"
+    },
+    "files": [
+      "out/**",
+      "resources/**"
+    ],
+    "asar": true
   }
 }

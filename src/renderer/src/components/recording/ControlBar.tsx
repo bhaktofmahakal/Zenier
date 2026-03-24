@@ -2,7 +2,6 @@ import React from 'react'
 import { useRecorderStore } from '../../stores/recorder-store'
 import { useRecorder } from '../../hooks/use-recorder'
 
-// Utility for time-string generation in UI
 function formatTime(totalSeconds: number): string {
   const h = Math.floor(totalSeconds / 3600)
   const m = Math.floor((totalSeconds % 3600) / 60)

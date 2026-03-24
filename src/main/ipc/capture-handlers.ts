@@ -2,6 +2,7 @@ import { ipcMain, desktopCapturer } from 'electron'
 import { IPC } from '../../shared/ipc-channels'
 import type { Result, CaptureSource } from '../../shared/types'
 
+// Register IPC handlers for screen and window enumeration
 export function registerCaptureHandlers(): void {
   ipcMain.handle(
     IPC.CAPTURE_LIST_SOURCES,

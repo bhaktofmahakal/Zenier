@@ -14,16 +14,15 @@ export function useMediaCapture() {
   const screenVideoRef = useRef<HTMLVideoElement | null>(null)
   const webcamVideoRef = useRef<HTMLVideoElement | null>(null)
 
-  // Halt hardware track emissions
+  // Stop and release hardware track locks
   const stopStream = useCallback((stream: MediaStream | null) => {
     if (stream) {
       stream.getTracks().forEach((t) => t.stop())
     }
   }, [])
 
-  // Mount active OS window buffer
+  // Initialize screen capture stream for the selected OS source
   const startScreenPreview = useCallback(async () => {
-    // Clean up previous
     stopStream(screenStreamRef.current)
     screenStreamRef.current = null
     setPreviewScreenStream(null)
@@ -31,17 +30,30 @@ export function useMediaCapture() {
     if (!selectedSource) return null
 
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: false,
-        video: {
-          mandatory: {
-            chromeMediaSource: 'desktop',
-            chromeMediaSourceId: selectedSource.id,
-            maxWidth: 1920,
-            maxHeight: 1080
-          }
-        } as MediaTrackConstraints
-      })
+      // @ts-ignore
+      const isBrowserDemo = window.isBrowserDemo
+      let stream: MediaStream
+
+      if (isBrowserDemo) {
+        // Use standard browser API for the Vercel/Web demo
+        stream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: false
+        })
+      } else {
+        // Use Electron-specific desktop capture for the production app
+        stream = await navigator.mediaDevices.getUserMedia({
+          audio: false,
+          video: {
+            mandatory: {
+              chromeMediaSource: 'desktop',
+              chromeMediaSourceId: selectedSource.id,
+              maxWidth: 1920,
+              maxHeight: 1080
+            }
+          } as MediaTrackConstraints
+        })
+      }
 
       screenStreamRef.current = stream
       setPreviewScreenStream(stream)
@@ -61,7 +73,7 @@ export function useMediaCapture() {
     }
   }, [selectedSource, stopStream, setPreviewScreenStream])
 
-  // Acquire USB web camera permissions
+  // Initialize USB camera stream with basic user permissions
   const startWebcamPreview = useCallback(async () => {
     // Clean up previous
     stopStream(webcamStreamRef.current)
@@ -98,7 +110,7 @@ export function useMediaCapture() {
     }
   }, [webcamEnabled, stopStream, setPreviewWebcamStream, setWebcamDeviceLabel])
 
-  // Re-evaluate display mounts
+  // Effect: Auto-recovery for screen capture tracks if they go stale
   useEffect(() => {
     const stream = screenStreamRef.current
     const track = stream?.getVideoTracks()[0]
@@ -110,7 +122,7 @@ export function useMediaCapture() {
     }
   }, [selectedSource, startScreenPreview])
 
-  // Re-evaluate USB camera mounts
+  // Effect: Sync webcam stream state with the `webcamEnabled` global toggle
   useEffect(() => {
     if (webcamEnabled) {
       startWebcamPreview()
@@ -122,7 +134,6 @@ export function useMediaCapture() {
         webcamVideoRef.current.srcObject = null
       }
     }
-    // Persist hardware lock for recording engine
   }, [webcamEnabled, startWebcamPreview, setPreviewWebcamStream, stopStream])
 
   const getScreenStream = useCallback(() => screenStreamRef.current, [])

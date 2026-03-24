@@ -4,7 +4,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { registerCaptureHandlers } from './ipc/capture-handlers'
 import { registerSessionHandlers } from './ipc/session-handlers'
 
-// Force legacy GDI/DirectX to prevent WGC native crash loops
+// Workaround: Force legacy GDI/DirectX to avoid native WGC capture crash loops on certain Windows builds
 app.commandLine.appendSwitch('disable-features', 'WinrtScreenCapture')
 
 process.on('uncaughtException', (error) => {
@@ -39,7 +39,7 @@ function createWindow(): BrowserWindow {
     }
   })
 
-  // Enforce strict CSP
+  // Enforce Content Security Policy to restrict cross-origin execution and media sourcing
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     const devCsp = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:* ws://localhost:*; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; connect-src 'self' ws://localhost:* http://localhost:*;"
     const prodCsp = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; connect-src 'self';"
@@ -63,6 +63,7 @@ function createWindow(): BrowserWindow {
   })
 
   mainWindow.on('close', (e) => {
+    // Intercept close to flush media buffers before window destruction
     e.preventDefault()
     mainWindow.webContents.send('app:shutdown-requested')
     setTimeout(() => { mainWindow.destroy() }, 3000)
@@ -84,7 +85,7 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  // Register global permission handler safely in app.whenReady
+  // Handle media permissions globally (Camera, Microphone, Screen)
   session.defaultSession.setPermissionRequestHandler((_webContents, permission, callback) => {
     const allowed = ['media', 'mediaKeySystem', 'display-capture', 'audioCapture', 'videoCapture']
     callback(allowed.includes(permission))

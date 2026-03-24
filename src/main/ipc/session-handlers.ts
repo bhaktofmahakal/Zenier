@@ -10,14 +10,14 @@ export function registerSessionHandlers(mainWindow: BrowserWindow): void {
   // Boot instance bound to OS userData
   writerService = new SessionWriterService(app.getPath('userData'))
 
-  // Pipe FFmpeg fulfillment events to UI
+  // Emit processing completion events to the renderer for UI updates
   writerService.on('processed', (meta: SessionMeta) => {
     if (!mainWindow.isDestroyed()) {
       mainWindow.webContents.send(IPC_EVENTS.SESSION_PROCESSED, meta)
     }
   })
 
-  // Mount new UUID directory and file descriptors
+  // Initialize session directory and hardware write streams
   ipcMain.handle(
     IPC.SESSION_CREATE,
     async (
@@ -40,7 +40,7 @@ export function registerSessionHandlers(mainWindow: BrowserWindow): void {
     }
   )
 
-  // Stream raw WebM buffer slices
+  // Append raw media buffer slices (WebM/Opus) from the renderer
   ipcMain.handle(
     IPC.SESSION_APPEND_CHUNK,
     async (
@@ -56,7 +56,7 @@ export function registerSessionHandlers(mainWindow: BrowserWindow): void {
     }
   )
 
-  // Seal descriptors and invoke FFmpeg
+  // Close write streams and trigger FFmpeg post-processing (webm -> mp4)
   ipcMain.handle(
     IPC.SESSION_FINALIZE,
     async (
@@ -72,7 +72,7 @@ export function registerSessionHandlers(mainWindow: BrowserWindow): void {
     }
   )
 
-  // Halt writes and unlink fragments
+  // Immediately stop writes and cleanup partial recording fragments
   ipcMain.handle(
     IPC.SESSION_ABORT,
     async (_, args: { sessionId: string }): Promise<Result<void>> => {
@@ -101,7 +101,7 @@ export function registerSessionHandlers(mainWindow: BrowserWindow): void {
     }
   )
 
-  // Rehydrate metadata index
+  // Retrieve index of all persisted sessions from the metadata store
   ipcMain.handle(IPC.SESSION_LIST, async (): Promise<Result<SessionMeta[]>> => {
     try {
       const sessions = await writerService.listSessions()

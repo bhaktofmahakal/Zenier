@@ -1,9 +1,6 @@
-// ──────────────────────────────────────────────
-// Typed IPC channel constants
-// Import in main handlers and preload bridge
-// ──────────────────────────────────────────────
+// Typed IPC channel constants for cross-process communication
 
-/** Renderer → Main invoke channels */
+// Renderer → Main invoke channels (Two-way)
 export const IPC = {
   CAPTURE_LIST_SOURCES: 'capture:listSources',
   SESSION_CREATE: 'session:create',
@@ -16,7 +13,7 @@ export const IPC = {
   SESSION_DELETE: 'session:delete'
 } as const
 
-/** Main → Renderer event channels */
+// Main → Renderer event channels (One-way)
 export const IPC_EVENTS = {
   SHUTDOWN_REQUESTED: 'app:shutdown-requested',
   SESSION_PROCESSED: 'session:processed'

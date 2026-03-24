@@ -2,14 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useLibraryStore } from '../stores/library-store'
 import { useUiStore } from '../stores/ui-store'
 
-// Utility for timestamp generation in UI
 function formatDuration(totalSeconds: number): string {
   const mins = Math.floor(totalSeconds / 60)
   const secs = totalSeconds % 60
   return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
 }
 
-// Utility for localized date formatting
 function formatDate(iso: string): string {
   const d = new Date(iso)
   return d.toLocaleDateString('en-US', { 

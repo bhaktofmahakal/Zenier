@@ -16,7 +16,6 @@ export const SourceGrid: React.FC = () => {
       const result = await window.api.listSources()
       if (result.success) {
         setSources(result.data)
-        // Auto-select first screen if none selected
         if (!selectedSource && result.data.length > 0) {
           const firstScreen = result.data.find((s) => s.id.startsWith('screen:'))
           if (firstScreen) setSelectedSource(firstScreen)

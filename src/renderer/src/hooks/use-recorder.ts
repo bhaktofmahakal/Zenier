@@ -100,7 +100,6 @@ export function useRecorder() {
       if (!previewScreen) throw new Error('Screen preview stream is missing')
       const screenStream = previewScreen.clone()
 
-      // Acquire microphone audio — sandbox is off so getUserMedia works directly
       let micTrack: MediaStreamTrack | null = null
       try {
         const micStream = await navigator.mediaDevices.getUserMedia({
@@ -127,7 +126,6 @@ export function useRecorder() {
             analyser.getByteFrequencyData(dataArray)
             let sum = 0; for (let i = 0; i < dataArray.length; i++) sum += dataArray[i]
             const avg = sum / dataArray.length
-            // Push to store for visual feedback
             useRecorderStore.getState().setAudioLevel(avg / 128)
             if (activeSessionId) requestAnimationFrame(updateLevel)
             else audioCtx.close()
@@ -223,13 +221,13 @@ export function useRecorder() {
 
     await Promise.all([stop(screenRecorder), stop(webcamRecorder)])
 
-    // Safety timeout for residual chunk flush
+    // Drain residual IPC chunk flushes before finalization
     const start = Date.now()
     while (pendingTasks > 0 && Date.now() - start < 10000) {
       await new Promise(r => setTimeout(r, 100))
     }
     
-    // Await pristine queues; ignore timed-out chains
+    // Await promise chain; ignore timed-out tasks
     if (pendingTasks === 0) {
       await ipcQueue
     }
@@ -237,8 +235,6 @@ export function useRecorder() {
     const stopTracks = (r: MediaRecorder | null) => {
       if (r && r.stream) {
         console.log(`[Recorder] Stopping tracks for ${r === screenRecorder ? 'screen' : 'webcam'} recorder`)
-        // No longer stopping all tracks from r.stream to avoid hardware lock issues
-        // The hardware tracks are managed by useMediaCapture
       }
     }
     stopTracks(screenRecorder)

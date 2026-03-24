@@ -2,13 +2,13 @@ import { contextBridge, ipcRenderer } from 'electron'
 import { IPC, IPC_EVENTS } from '../shared/ipc-channels'
 import type { Result, CaptureSource, SessionMeta, ChunkTarget } from '../shared/types'
 
-/** Typed API exposed to the renderer via contextBridge */
+// Context bridge API for secure main <-> renderer communication
 const api = {
-  // ── Capture ──────────────────────────────────
+
   listSources: (): Promise<Result<CaptureSource[]>> =>
     ipcRenderer.invoke(IPC.CAPTURE_LIST_SOURCES),
 
-  // ── Session lifecycle ────────────────────────
+
   createSession: (args: {
     sessionName: string
     sourceName: string
@@ -48,7 +48,7 @@ const api = {
   deleteSession: (args: { sessionId: string }): Promise<Result<void>> =>
     ipcRenderer.invoke(IPC.SESSION_DELETE, args),
 
-  // ── Main → Renderer events ──────────────────
+
   onShutdownRequested: (callback: () => void): (() => void) => {
     const handler = (): void => callback()
     ipcRenderer.on(IPC_EVENTS.SHUTDOWN_REQUESTED, handler)

@@ -30,7 +30,6 @@ export class SessionWriterService extends EventEmitter {
   constructor(userDataPath: string) {
     super()
     this.userDataPath = userDataPath
-    // Defer to createSession to prevent sync I/O blocking
   }
 
   private setupStream(stream: WriteStream, session: ActiveSession, name: string) {
@@ -43,7 +42,7 @@ export class SessionWriterService extends EventEmitter {
     })
   }
 
-  // Initialize recording session and streams
+  // Provision UUID directory and initialize hardware write streams
   async createSession(args: {
     sessionId: string
     sessionName: string
@@ -80,7 +79,7 @@ export class SessionWriterService extends EventEmitter {
     return { sessionId: args.sessionId, savePath: sessionDir }
   }
 
-  // Stream raw bytes to disk
+  // Pass raw media buffer slices directly to FS descriptors
   async appendChunk(sessionId: string, target: ChunkTarget, chunk: Buffer): Promise<void> {
     const session = this.activeSessions.get(sessionId)
     if (!session) throw new Error(`Session ${sessionId} not found`)
@@ -98,7 +97,7 @@ export class SessionWriterService extends EventEmitter {
     })
   }
 
-  // Seal session and trigger FFmpeg merge
+  // Finalize media files and trigger asynchronous FFmpeg post-processing
   async finalizeSession(sessionId: string, duration: number): Promise<SessionMeta> {
     const session = this.activeSessions.get(sessionId)
     if (!session) throw new Error(`Session ${sessionId} not found`)
@@ -149,7 +148,6 @@ export class SessionWriterService extends EventEmitter {
     const metaPath = join(session.savePath, 'session.json')
     writeFileSync(metaPath, JSON.stringify(meta, null, 2))
 
-    // Handle background merging if needed
     if (session.format === 'mp4') {
       // 1000ms delay to ensure OS has fully flushed and released the webm files
       await new Promise(r => setTimeout(r, 1000))
@@ -178,7 +176,6 @@ export class SessionWriterService extends EventEmitter {
       }
     }
 
-    // Final check for screen file
     if (!existsSync(screenPath) || statSync(screenPath).size < 1000) {
       console.error('[FFmpeg] Screen file missing or empty, aborting merge.')
       return Promise.resolve()
@@ -242,7 +239,7 @@ export class SessionWriterService extends EventEmitter {
     })
   }
 
-  // Halt recording and purge buffers
+  // Immediate session termination and local asset cleanup
   async abortSession(sessionId: string): Promise<void> {
     const session = this.activeSessions.get(sessionId)
     if (!session) return
@@ -266,7 +263,7 @@ export class SessionWriterService extends EventEmitter {
     this.activeSessions.delete(sessionId)
   }
 
-  // Rehydrate history from disk
+  // Reconstruct session history by scanning the video storage directory
   async listSessions(): Promise<SessionMeta[]> {
     const sessionsDir = join(this.userDataPath, 'videos')
     if (!existsSync(sessionsDir)) return []
@@ -316,7 +313,7 @@ export class SessionWriterService extends EventEmitter {
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) // sort newest first
   }
 
-  // Patch metadata file
+  // Update the session's name in its local metadata file
   async renameSession(sessionId: string, newName: string): Promise<SessionMeta> {
     console.log(`[Service] Renaming session ${sessionId} to "${newName}"`)
     const sessionDir = this.getSessionPath(sessionId)

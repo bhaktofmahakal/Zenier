@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "public": true,
+  "name": "zenier-recorder-ui",
+  "cleanUrls": true,
+  "framework": "vite",
+  "buildCommand": "npm run build-web",
+  "outputDirectory": "out/renderer"
+}
